@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bill Splitter</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 30px 15px;
+    }
+    .card {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 20px 25px 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 14px 0 6px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 15px;
+      border: 1px solid #999;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background: #fff;
+    }
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 11px;
+      font-size: 16px;
+      color: #fff;
+      background: #444;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #222;
+    }
+    #result {
+      margin-top: 20px;
+      line-height: 1.8;
+    }
+    .error {
+      color: #d00000;
+      background: #fdecec;
+      padding: 12px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Bill Splitter</h1>
+
+    <label for="bill">Bill amount (Rs.)</label>
+    <input type="number" id="bill" placeholder="e.g. 1200">
+
+    <label for="tip">Tip</label>
+    <select id="tip">
+      <option value="0">0%</option>
+      <option value="5">5%</option>
+      <option value="10" selected>10%</option>
+      <option value="15">15%</option>
+    </select>
+
+    <label for="people">Number of people</label>
+    <input type="number" id="people" value="1">
+
+    <button id="calcBtn">Calculate</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById("calcBtn").addEventListener("click", function () {
+      // Read the three values and convert them to numbers
+      var bill = parseFloat(document.getElementById("bill").value);
+      var tipPercent = parseFloat(document.getElementById("tip").value);
+      var people = parseInt(document.getElementById("people").value);
+
+      var result = document.getElementById("result");
+
+      // Validation: bill empty / not above 0, or people less than 1
+      if (isNaN(bill) || bill <= 0 || isNaN(people) || people < 1) {
+        result.innerHTML =
+          '<div class="error">Please enter a valid bill and number of people.</div>';
+        return;
+      }
+
+      // Calculations
+      var tipAmount = bill * tipPercent / 100;
+      var totalBill = bill + tipAmount;
+      var perPerson = totalBill / people;
+
+      // Show results rounded to 2 decimal places
+      result.innerHTML =
+        "<div>Tip amount: <b>Rs. " + tipAmount.toFixed(2) + "</b></div>" +
+        "<div>Total bill: <b>Rs. " + totalBill.toFixed(2) + "</b></div>" +
+        "<div>Each person pays: <b>Rs. " + perPerson.toFixed(2) + "</b></div>";
+    });
+  </script>
+</body>
+</html>
